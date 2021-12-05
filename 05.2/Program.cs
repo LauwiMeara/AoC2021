@@ -18,7 +18,7 @@ namespace _05._2
                 int x2 = int.Parse(line[1][0]);
                 int y2 = int.Parse(line[1][1]);
 
-                // If x1 and x2 are equal, the line is drawn on the y axis
+                // If x1 and x2 are equal, the line is drawn on the x axis between y1 and y2
                 if (x1 == x2)
                 {
                     int minY = y1 <= y2 ? y1 : y2;
@@ -30,7 +30,7 @@ namespace _05._2
                     }
                 }
 
-                // If y1 and y2 are equal, the line is drawn on the x axis
+                // If y1 and y2 are equal, the line is drawn on the y axis between x1 and x2
                 else if (y1 == y2)
                 {
                     int minX = x1 <= x2 ? x1 : x2;
@@ -42,7 +42,7 @@ namespace _05._2
                     }
                 }
 
-                // If neither x1 and x2, nor y1 and y2 are equal, the line is drawn diagonally
+                // If neither x1 and x2, nor y1 and y2 are equal, the line is drawn diagonally between x1, y1 and x2, y2
                 else
                 {
                     int diff = Math.Abs(x1 - x2);
