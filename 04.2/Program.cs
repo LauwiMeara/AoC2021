@@ -12,36 +12,27 @@ namespace _04._2
             string[] input = File.ReadAllText("input.txt").Split("\r\n\r\n").ToArray();
             string[] draws = input[0].Split(',').ToArray();
             List<string[][]> boards = input[1..].Select(board => board.Split("\r\n").Select(column => column.Split(' ', StringSplitOptions.RemoveEmptyEntries)).ToArray()).ToList();
-            
-            
-            foreach (string number in draws)
+
+
+            for (int i = 0; i < draws.Length; i++)
             {
-                // If a board is bingo, but there are other boards left, remove the board from the list
-                // Check with the while loop to see if there are other boards that simultaneously are bingo
-                while (BoardIsBingo(boards) != boards.Count && boards.Count != 1)
+                // Get all boards that have bingo and remove them from the list, unless it's the last bingo board
+                while (GetWinningBoard(boards) != boards.Count && boards.Count != 1)
                 {
-                    boards.RemoveAt(BoardIsBingo(boards));
+                    boards.RemoveAt(GetWinningBoard(boards));
                 }
 
-                int bingoBoard = BoardIsBingo(boards);
+                int winningBoard = GetWinningBoard(boards);
 
-                // If the final board is bingo, calculate the score
-                if (boards.Count == 1 && bingoBoard == 0)
+                // If the final board has bingo, calculate the score
+                if (boards.Count == 1 && winningBoard == 0)
                 {
-                    string[][] board = boards[bingoBoard];
-                    int sum = 0;
+                    string[][] board = boards[winningBoard];
 
-                    for (int row = 0; row < board.Length; row++)
-                    {
-                        for (int column = 0; column < board[row].Length; column++)
-                        {
-                            if (board[row][column] != "#") sum += int.Parse(board[row][column]);
-                        }
-                    }
-
-                    int calledNumber = int.Parse(draws[Array.IndexOf(draws, number) - 1]);
-
+                    int sum = board.SelectMany(x => x).Sum(x => x != "#" ? int.Parse(x) : 0);
+                    int calledNumber = int.Parse(draws[i - 1]);
                     int score = sum * calledNumber;
+
                     Console.WriteLine($"The score is {score}");
                     break;
                 }
@@ -53,22 +44,23 @@ namespace _04._2
                     {
                         for (int column = 0; column < board[row].Length; column++)
                         {
-                            if (board[row][column] == number) board[row][column] = "#";
+                            if (board[row][column] == draws[i]) board[row][column] = "#";
                         }
                     }
                 }
             }
         }
 
-        static int BoardIsBingo(List<string[][]> boards)
+        static int GetWinningBoard(List<string[][]> boards)
         {
-            int boardIsBingo = boards.Count;
+            // If none of the boards has bingo, the returned value of winningBoard will be 1 higher than the last index of boards
+            int winningBoard = boards.Count;
 
             for (int i = 0; i < boards.Count; i++)
             {
                 string[][] board = boards[i];
 
-                // Check every row
+                // Check every row for bingo
                 for (int row = 0; row < board.Length; row++)
                 {
                     int markedNumbers = 0;
@@ -80,12 +72,12 @@ namespace _04._2
 
                     if (markedNumbers == board[row].Length)
                     {
-                        boardIsBingo = i;
+                        winningBoard = i;
                         break;
                     }
                 }
 
-                // Check every column
+                // Check every column for bingo
                 for (int column = 0; column < board[0].Length; column++)
                 {
                     int markedNumbers = 0;
@@ -97,13 +89,13 @@ namespace _04._2
 
                     if (markedNumbers == board.Length)
                     {
-                        boardIsBingo = i;
+                        winningBoard = i;
                         break;
                     }
                 }
             }
 
-            return boardIsBingo;
+            return winningBoard;
         }
     }
 }

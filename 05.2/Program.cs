@@ -69,7 +69,7 @@ namespace _05._2
                 }
             }
 
-            int numOverlappingPoints = field.SelectMany(xy => xy).Aggregate(0, (sum, xy) => xy >= 2 ? sum + 1 : sum);
+            int numOverlappingPoints = field.SelectMany(xy => xy).Sum(xy => xy >= 2 ? 1 : 0);
 
             Console.WriteLine($"There are {numOverlappingPoints} dangerous areas.");
         }
