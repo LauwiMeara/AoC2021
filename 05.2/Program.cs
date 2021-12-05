@@ -9,13 +9,7 @@ namespace _05._2
         static void Main()
         {
             string[][][] input = File.ReadAllLines("input.txt").Select(line => line.Split(" -> ").Select(xy => xy.Split(",")).ToArray()).ToArray();
-            
-            int maxValue = input.SelectMany(line => line.SelectMany(xy => xy)).Select(xy => int.Parse(xy)).Max();
-            int[][] field = new int[maxValue + 1][];
-            for (int i = 0; i < field.Length; i++)
-            {
-                field[i] = new int[maxValue + 1];
-            }
+            int[][] field = CreateField(input);
 
             foreach (string[][] line in input)
             {
@@ -24,42 +18,31 @@ namespace _05._2
                 int x2 = int.Parse(line[1][0]);
                 int y2 = int.Parse(line[1][1]);
 
+                // If x1 and x2 are equal, the line is drawn on the y axis
                 if (x1 == x2)
                 {
-                    if (y1 <= y2)
+                    int minY = y1 <= y2 ? y1 : y2;
+                    int maxY = y1 > y2 ? y1 : y2;
+
+                    for (int y = minY; y <= maxY; y++)
                     {
-                        for (int y = y1; y <= y2; y++)
-                        {
-                            field[x1][y]++;
-                        }
-                    }
-                    else
-                    {
-                        for (int y = y2; y <= y1; y++)
-                        {
-                            field[x1][y]++;
-                        }
+                        field[x1][y]++;
                     }
                 }
 
+                // If y1 and y2 are equal, the line is drawn on the x axis
                 else if (y1 == y2)
                 {
-                    if (x1 <= x2)
+                    int minX = x1 <= x2 ? x1 : x2;
+                    int maxX = x1 > x2 ? x1 : x2;
+
+                    for (int x = minX; x <= maxX; x++)
                     {
-                        for (int x = x1; x <= x2; x++)
-                        {
-                            field[x][y1]++;
-                        }
-                    }
-                    else
-                    {
-                        for (int x = x2; x <= x1; x++)
-                        {
-                            field[x][y1]++;
-                        }
+                        field[x][y1]++;
                     }
                 }
 
+                // If neither x1 and x2, nor y1 and y2 are equal, the line is drawn diagonally
                 else
                 {
                     int diff = Math.Abs(x1 - x2);
@@ -82,25 +65,25 @@ namespace _05._2
                         {
                             field[x1 - i][y1 - i]++;
                         }
-                        
                     }
                 }
             }
 
-            int numOverlappingPoints = 0;
-
-            for (int x = 0; x < field.Length; x++)
-            {
-                for (int y = 0; y < field[x].Length; y++)
-                {
-                    if (field[x][y] >= 2)
-                    {
-                        numOverlappingPoints++;
-                    }
-                }
-            }
+            int numOverlappingPoints = field.SelectMany(xy => xy).Aggregate(0, (sum, xy) => xy >= 2 ? sum + 1 : sum);
 
             Console.WriteLine($"There are {numOverlappingPoints} dangerous areas.");
+        }
+
+        static int[][] CreateField(string[][][] input)
+        {
+            int maxValue = input.SelectMany(line => line.SelectMany(xy => xy)).Select(xy => int.Parse(xy)).Max();
+            int[][] field = new int[maxValue + 1][];
+            for (int i = 0; i < field.Length; i++)
+            {
+                field[i] = new int[maxValue + 1];
+            }
+
+            return field;
         }
     }
 }
