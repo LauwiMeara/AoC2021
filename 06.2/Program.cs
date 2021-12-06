@@ -9,44 +9,40 @@ namespace _06._2
     {
         static void Main()
         {
-            Dictionary<int, long> timers = new Dictionary<int, long>
+            int maxTimer = 8;
+            int finalDay = 256;
+
+            // Create empty dictionary for all timers up until maxTimer
+            Dictionary<int, long> timers = new Dictionary<int, long>();
+            for (int i = 0; i <= maxTimer; i++)
             {
-                { 0, 0 },
-                { 1, 0 },
-                { 2, 0 },
-                { 3, 0 },
-                { 4, 0 },
-                { 5, 0 },
-                { 6, 0 },
-                { 7, 0 },
-                { 8, 0 }
-            };
+                timers.Add(i, 0);
+            }
 
-            List<int> input = File.ReadAllText("input.txt").Split(",").Select(timer => int.Parse(timer)).ToList();
-
-            foreach (int timer in input)
+            // Fill dictionary with initial state
+            int[] init = File.ReadAllText("input.txt").Split(",").Select(timer => int.Parse(timer)).ToArray();
+            foreach (int timer in init)
             {
                 timers[timer]++;
             }
 
-            for (int day = 0; day < 256; day++)
+            // Calculate the number of fish per timer for each day until the final day
+            for (int day = 0; day < finalDay; day++)
             {
                 long pregnantFish = timers[0];
 
-                timers[0] = timers[1];
-                timers[1] = timers[2];
-                timers[2] = timers[3];
-                timers[3] = timers[4];
-                timers[4] = timers[5];
-                timers[5] = timers[6];
-                timers[6] = timers[7] + pregnantFish;
-                timers[7] = timers[8];
+                for (int i = 0; i < maxTimer; i++)
+                {
+                    timers[i] = timers[i + 1];
+                }
+
+                timers[6] += pregnantFish;
                 timers[8] = pregnantFish;
             }
 
-            long numLanternfish = timers[0] + timers[1] + timers[2] + timers[3] + timers[4] + timers[5] + timers[6] + timers[7] + timers[8];
+            long numFish = timers.Sum(timer => timer.Value);
 
-            Console.WriteLine($"The number of lanternfish after 256 days is {numLanternfish}");
+            Console.WriteLine($"The number of lanternfish after {finalDay} days is {numFish}");
         }
     }
 }
