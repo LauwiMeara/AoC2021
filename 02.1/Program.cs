@@ -15,23 +15,24 @@ namespace _02._1
 
             foreach (string[] command in course)
             {
-                switch (command[0])
+                string direction = command[0];
+                int number = int.Parse(command[1]);
+
+                switch (direction)
                 {
                     case "forward":
-                        horizontalPosition += int.Parse(command[1]);
+                        horizontalPosition += number;
                         break;
                     case "down":
-                        depth += int.Parse(command[1]);
+                        depth += number;
                         break;
                     case "up":
-                        depth -= int.Parse(command[1]);
+                        depth -= number;
                         break;
                 }
             }
 
-            int product = depth * horizontalPosition;
-
-            Console.WriteLine($"The depth multiplied by the horizontal position is {product}");
+            Console.WriteLine($"The depth multiplied by the horizontal position is {depth * horizontalPosition}");
         }
     }
 }

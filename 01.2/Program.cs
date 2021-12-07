@@ -10,13 +10,15 @@ namespace _01._2
         {
             int[] report = File.ReadAllLines("input.txt").Select(int.Parse).ToArray();
             
-            int numIncreases = 0;
-            int firstSum = report[0] + report[1] + report[2];
+            int groupSize = 3;
 
-            for (int i = 1; i < report.Length - 2; i++)
+            int numIncreases = 0;
+            int firstSum = report[0..groupSize].Sum();
+
+            for (int i = 1; i <= report.Length - groupSize; i++)
             {
-                int secondSum = report[i] + report[i + 1] + report[i + 2];
-                if(secondSum > firstSum) numIncreases++;
+                int secondSum = report[i..(i + groupSize)].Sum();
+                if (secondSum > firstSum) numIncreases++;
                 firstSum = secondSum;
             }
 

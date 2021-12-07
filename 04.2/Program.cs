@@ -22,18 +22,15 @@ namespace _04._2
                     boards.RemoveAt(GetWinningBoard(boards));
                 }
 
-                int winningBoard = GetWinningBoard(boards);
-
                 // If the final board has bingo, calculate the score
-                if (boards.Count == 1 && winningBoard == 0)
+                if (boards.Count == 1 && GetWinningBoard(boards) == 0)
                 {
-                    string[][] board = boards[winningBoard];
+                    string[][] board = boards[0];
 
                     int sum = board.SelectMany(x => x).Sum(x => x != "#" ? int.Parse(x) : 0);
                     int calledNumber = int.Parse(draws[i - 1]);
-                    int score = sum * calledNumber;
 
-                    Console.WriteLine($"The score is {score}");
+                    Console.WriteLine($"The score is {sum * calledNumber}");
                     break;
                 }
 
@@ -63,35 +60,13 @@ namespace _04._2
                 // Check every row for bingo
                 for (int row = 0; row < board.Length; row++)
                 {
-                    int markedNumbers = 0;
-
-                    for (int column = 0; column < board[row].Length; column++)
-                    {
-                        if (board[row][column] == "#") markedNumbers++;
-                    }
-
-                    if (markedNumbers == board[row].Length)
-                    {
-                        winningBoard = i;
-                        break;
-                    }
+                    if (board[row].Where(column => column == "#").Count() == board[row].Length) winningBoard = i;
                 }
 
                 // Check every column for bingo
                 for (int column = 0; column < board[0].Length; column++)
                 {
-                    int markedNumbers = 0;
-
-                    for (int row = 0; row < board.Length; row++)
-                    {
-                        if (board[row][column] == "#") markedNumbers++;
-                    }
-
-                    if (markedNumbers == board.Length)
-                    {
-                        winningBoard = i;
-                        break;
-                    }
+                    if (board.Where(row => row[column] == "#").Count() == board[0].Length) winningBoard = i;
                 }
             }
 

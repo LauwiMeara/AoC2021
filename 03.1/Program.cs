@@ -15,7 +15,9 @@ namespace _03._1
 
             for (int bit = 0; bit < report[0].Length; bit++)
             {
-                if (DetermineMostCommonValue(report, bit) == '0')
+                char mostCommonValue = report.GroupBy(number => number[bit]).OrderByDescending(group => group.Count()).First().Key;
+                
+                if (mostCommonValue == '0')
                 {
                     gamma += '0';
                     epsilon += '1';
@@ -30,24 +32,7 @@ namespace _03._1
             int gammaDecimal = Convert.ToInt32(gamma, 2);
             int epsilonDecimal = Convert.ToInt32(epsilon, 2);
 
-            int powerConsumption = gammaDecimal * epsilonDecimal;
-
-            Console.WriteLine($"The power consumption is {powerConsumption}");
-        }
-
-        static char DetermineMostCommonValue(string[] report, int bit)
-        {
-            int numOf0 = 0;
-            int numOf1 = 0;
-
-            foreach (string number in report)
-            {
-                if (number[bit] == '0') numOf0++;
-                else numOf1++;
-            }
-
-            if (numOf0 > numOf1) return '0';
-            else return '1';
+            Console.WriteLine($"The power consumption is {gammaDecimal * epsilonDecimal}");
         }
     }
 }
