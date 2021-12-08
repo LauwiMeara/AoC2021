@@ -20,7 +20,7 @@ namespace _06._2
             }
 
             // Fill dictionary with initial state
-            int[] init = File.ReadAllText("input.txt").Split(",").Select(timer => int.Parse(timer)).ToArray();
+            int[] init = File.ReadAllText("input.txt").Split(",").Select(int.Parse).ToArray();
             foreach (int timer in init)
             {
                 timers[timer]++;

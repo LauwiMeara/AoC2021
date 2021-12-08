@@ -9,7 +9,7 @@ namespace _06._1
     {
         static void Main()
         {
-            List<int> timers = File.ReadAllText("input.txt").Split(",").Select(timer => int.Parse(timer)).ToList();
+            List<int> timers = File.ReadAllText("input.txt").Split(",").Select(int.Parse).ToList();
 
             for (int day = 0; day < 80; day++)
             {
