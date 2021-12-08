@@ -60,13 +60,13 @@ namespace _04._2
                 // Check every row for bingo
                 for (int row = 0; row < board.Length; row++)
                 {
-                    if (board[row].Where(column => column == "#").Count() == board[row].Length) winningBoard = i;
+                    if (board[row].Count(column => column == "#") == board[row].Length) winningBoard = i;
                 }
 
                 // Check every column for bingo
                 for (int column = 0; column < board[0].Length; column++)
                 {
-                    if (board.Where(row => row[column] == "#").Count() == board[0].Length) winningBoard = i;
+                    if (board.Count(row => row[column] == "#") == board[0].Length) winningBoard = i;
                 }
             }
 

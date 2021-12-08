@@ -8,7 +8,7 @@ namespace _03._1
     {
         static void Main()
         {
-            string[] report = File.ReadAllLines("input.txt").ToArray();
+            string[] report = File.ReadAllLines("input.txt");
 
             string gamma = "";
             string epsilon = "";

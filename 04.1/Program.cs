@@ -8,9 +8,9 @@ namespace _04._1
     {
         static void Main()
         {
-            string[] input = File.ReadAllText("input.txt").Split("\r\n\r\n").ToArray();
-            string[] draws = input[0].Split(',').ToArray();
-            string[][][] boards = input[1..].Select(board => board.Split("\r\n").Select(column => column.Split(' ', StringSplitOptions.RemoveEmptyEntries)).ToArray()).ToArray();
+            string[] input = File.ReadAllText("input.txt").Split($"{Environment.NewLine}{Environment.NewLine}");
+            string[] draws = input[0].Split(',');
+            string[][][] boards = input[1..].Select(board => board.Split(Environment.NewLine).Select(column => column.Split(' ', StringSplitOptions.RemoveEmptyEntries)).ToArray()).ToArray();
 
             for (int i = 0; i < draws.Length; i++)
             {
@@ -57,13 +57,13 @@ namespace _04._1
                 // Check every row for bingo
                 for (int row = 0; row < board.Length; row++)
                 {
-                    if (board[row].Where(column => column == "#").Count() == board[row].Length) winningBoard = i;
+                    if (board[row].Count(column => column == "#") == board[row].Length) winningBoard = i;
                 }
 
                 // Check every column for bingo
                 for (int column = 0; column < board[0].Length; column++)
                 {
-                    if (board.Where(row => row[column] == "#").Count() == board[0].Length) winningBoard = i;
+                    if (board.Count(row => row[column] == "#") == board[0].Length) winningBoard = i;
                 }
             }
 
