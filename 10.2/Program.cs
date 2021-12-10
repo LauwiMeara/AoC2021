@@ -17,29 +17,30 @@ namespace _10._2
             {
                 bool corrupted = false;
 
-                List<char> chunks = new List<char>
-                {
-                    line[0]
-                };
+                Stack<char> chunks = new Stack<char>();
 
-                for (int i = 1; i < line.Length; i++)
+                foreach (char chunk in line)
                 {
-                    char chunk = line[i];
-
-                    if (openingChunks.Contains(chunk))
+                    if (chunks.Count == 0)
                     {
-                        chunks.Add(chunk);
+                        chunks.Push(chunk);
                         continue;
                     }
 
-                    char prevChunk = chunks.Last();
+                    if (openingChunks.Contains(chunk))
+                    {
+                        chunks.Push(chunk);
+                        continue;
+                    }
+
+                    char prevChunk = chunks.Peek();
 
                     if ((prevChunk == '(' && chunk == ')') ||
                         (prevChunk == '[' && chunk == ']') ||
                         (prevChunk == '{' && chunk == '}') ||
                         (prevChunk == '<' && chunk == '>'))
                     {
-                        chunks.RemoveAt(chunks.Count - 1);
+                        chunks.Pop();
                         continue;
                     }
 
@@ -55,7 +56,7 @@ namespace _10._2
                     {
                         subScore *= 5;
 
-                        switch (chunks.Last())
+                        switch (chunks.Peek())
                         {
                             case '(':
                                 subScore += 1;
@@ -71,7 +72,7 @@ namespace _10._2
                                 break;
                         }
 
-                        chunks.RemoveAt(chunks.Count - 1);
+                        chunks.Pop();
                     }
 
                     scores.Add(subScore);
@@ -79,7 +80,7 @@ namespace _10._2
             }
 
             scores.Sort();
-            long totalScore = scores[(scores.Count - 1) / 2];
+            long totalScore = scores[(scores.Count) / 2];
 
             Console.WriteLine($"My score is {totalScore}!");
         }

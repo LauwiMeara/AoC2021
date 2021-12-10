@@ -19,17 +19,13 @@ namespace _09._1
                     int point = input[row][column];
                     
                     // Check all neighbours; if a neighbour has a lower value, continue to the next point
-                    // Check neighbour above
-                    if (row != 0)
+                    if (row != 0) // Above
                         if (point >= input[row - 1][column]) continue;
-                    // Check left neighbour
-                    if (column != 0)
+                    if (column != 0) // Left
                         if (point >= input[row][column - 1]) continue;
-                    // Check neighbour below
-                    if (row != input.Length - 1)
+                    if (row != input.Length - 1) // Below
                         if (point >= input[row + 1][column]) continue;
-                    // Check right neighbour
-                    if (column != input[row].Length - 1)
+                    if (column != input[row].Length - 1) // Right
                         if (point >= input[row][column + 1]) continue;
 
                     // If you reach this, the point is the lowest point and has to be added to the sum

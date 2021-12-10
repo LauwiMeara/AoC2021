@@ -21,29 +21,30 @@ namespace _10._1
 
             foreach (string line in input)
             {
-                List<char> chunks = new List<char>
-                {
-                    line[0]
-                };
+                Stack<char> chunks = new Stack<char>();
 
-                for (int i = 1; i < line.Length; i++)
+                foreach (char chunk in line)
                 {
-                    char chunk = line[i];
-
-                    if (openingChunks.Contains(chunk))
+                    if (chunks.Count == 0)
                     {
-                        chunks.Add(chunk);
+                        chunks.Push(chunk);
                         continue;
                     }
 
-                    char prevChunk = chunks.Last();
+                    if (openingChunks.Contains(chunk))
+                    {
+                        chunks.Push(chunk);
+                        continue;
+                    }
+
+                    char prevChunk = chunks.Peek();
 
                     if ((prevChunk == '(' && chunk == ')') ||
                         (prevChunk == '[' && chunk == ']') ||
                         (prevChunk == '{' && chunk == '}') ||
                         (prevChunk == '<' && chunk == '>'))
                     {
-                        chunks.RemoveAt(chunks.Count - 1);
+                        chunks.Pop();
                         continue;
                     }
 
