@@ -12,7 +12,7 @@ namespace _08._1
             string[] outputValues = input.Select(signals => signals[1]).SelectMany(signals => signals).ToArray();
 
             int[] lengthUniqueDigits = new int[] { 2, 4, 3, 7 };
-            int numUniqueDigits = outputValues.Where(signals => lengthUniqueDigits.Contains(signals.Count())).Count();
+            int numUniqueDigits = outputValues.Count(signals => lengthUniqueDigits.Contains(signals.Count()));
 
             Console.WriteLine($"The digits 1, 4, 7 or 8 appear {numUniqueDigits} times");
         }

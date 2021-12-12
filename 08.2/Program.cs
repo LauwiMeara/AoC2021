@@ -78,25 +78,25 @@ namespace _08._2
             var signalsSecondSegment = signalPatterns.Where(signal => !signal.Contains(secondSegment));
             if (signalsFirstSegment.Count() == 1)
             {
-                decodedSignals[2] = signalsFirstSegment.First();
-                decodedSignals[5] = signalsSecondSegment.Where(signal => signal.Length == 5).First();
-                decodedSignals[6] = signalsSecondSegment.Where(signal => signal.Length == 6).First();
+                decodedSignals[2] = signalsFirstSegment.Single();
+                decodedSignals[5] = signalsSecondSegment.Single(signal => signal.Length == 5);
+                decodedSignals[6] = signalsSecondSegment.Single(signal => signal.Length == 6);
             }
             else
             {
-                decodedSignals[2] = signalsSecondSegment.First();
-                decodedSignals[5] = signalsFirstSegment.Where(signal => signal.Length == 5).First();
-                decodedSignals[6] = signalsFirstSegment.Where(signal => signal.Length == 6).First();
+                decodedSignals[2] = signalsSecondSegment.Single();
+                decodedSignals[5] = signalsFirstSegment.Single(signal => signal.Length == 5);
+                decodedSignals[6] = signalsFirstSegment.Single(signal => signal.Length == 6);
             }
 
             // Digit 3 is the only digit left with 5 segments; digits 2 and 5 are already known
-            decodedSignals[3] = signalPatterns.Where(signal => signal.Length == 5 && signal != decodedSignals[2] && signal != decodedSignals[5]).First();
+            decodedSignals[3] = signalPatterns.Single(signal => signal.Length == 5 && signal != decodedSignals[2] && signal != decodedSignals[5]);
 
             // Digits 0, 6 and 9 have 6 segments
             // Digit 6 is already known
             // Digit 9 has all the segments of digit 4; digit 0 doesn't
-            decodedSignals[9] = signalPatterns.Where(signal => signal.Length == 6 && signal != decodedSignals[6] && signal.Intersect(decodedSignals[4]).Count() == decodedSignals[4].Length).First();
-            decodedSignals[0] = signalPatterns.Where(signal => signal.Length == 6 && signal != decodedSignals[6] && signal.Intersect(decodedSignals[4]).Count() != decodedSignals[4].Length).First();
+            decodedSignals[9] = signalPatterns.Single(signal => signal.Length == 6 && signal != decodedSignals[6] && signal.Intersect(decodedSignals[4]).Count() == decodedSignals[4].Length);
+            decodedSignals[0] = signalPatterns.Single(signal => signal.Length == 6 && signal != decodedSignals[6] && signal.Intersect(decodedSignals[4]).Count() != decodedSignals[4].Length);
 
             return decodedSignals;
         }
